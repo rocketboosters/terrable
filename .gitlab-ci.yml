@@ -1,0 +1,65 @@
+stages:
+  - check
+
+black-lint:
+  image: python:3.9
+  stage: check
+  script:
+  - pip install black
+  - black --check .
+
+flake8-lint:
+  image: python:3.9
+  stage: check
+  script:
+  - pip install flake8 flake8-black
+  - flake8 .
+
+mypy-lint:
+  image: python:3.9
+  stage: check
+  script:
+  - pip install mypy
+  - mypy . --ignore-missing-imports
+
+pytest-py38:
+  image: python:3.8
+  stage: check
+  script:
+    - pip install poetry
+    - poetry install
+    - >
+      poetry run
+      py.test
+      --verbose
+      --cov-report term-missing
+      --cov=.
+      .
+  artifacts:
+    paths:
+      - .coverage
+      - coverage.xml
+    expire_in: 1 day
+
+pytest-py39:
+  image: python:3.9
+  stage: check
+  coverage: '/^TOTAL.*\s+\d+\s+\d+\s+(\d+)%/'
+  script:
+    - pip install poetry
+    - poetry install
+    - >
+      poetry run
+      py.test
+      --verbose
+      --cov-report term-missing
+      --cov-report xml
+      --cov=.
+      .
+  artifacts:
+    reports:
+      cobertura: coverage.xml
+    paths:
+      - .coverage
+      - coverage.xml
+    expire_in: 1 day
