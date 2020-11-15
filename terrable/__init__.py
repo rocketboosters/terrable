@@ -26,7 +26,7 @@ def _parse(arguments: typing.List[str] = None):
         p.add_argument("--aws-directory", default="~/.aws")
         p.add_argument("--profile", dest="aws_profile")
         p.add_argument("--bucket")
-        p.add_argument("--prefix", default="")
+        p.add_argument("--prefix", default="terrable")
 
     return parser.parse_args(arguments)
 
