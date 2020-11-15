@@ -28,6 +28,10 @@ class ModuleVersion:
 
     #: Name of the module that this is a version of.
     name: str
+    #: AWS region in which the bucket resides.
+    region: str
+    #: Bucket where this module resides
+    bucket: str
     #: Response entry from an s3.list_objects_v2 entry response.
     raw: dict
 
@@ -37,12 +41,21 @@ class ModuleVersion:
 
     @property
     def key(self) -> str:
-        return self.raw.get("Key", "")
+        return self.raw.get("Key", "").lstrip("/")
 
     @property
     def last_modified(self) -> datetime.datetime:
         return self.raw.get("LastModified") or datetime.datetime.utcnow().astimezone(
             datetime.timezone.utc
+        )
+
+    @property
+    def module_url(self) -> str:
+        """URL to use as the source for this version in a terraform module block."""
+        return "s3::https://s3-{region}.amazonaws.com/{bucket}/{key}".format(
+            region=self.region,
+            bucket=self.bucket,
+            key=self.key,
         )
 
     @property
@@ -52,5 +65,9 @@ class ModuleVersion:
 
     def echo(self) -> str:
         """Returns a human-friendly representation of this version."""
-        modified = self.last_modified.isoformat()
-        return f"{self.version}: {modified} ({self.size:,.0f} bytes)"
+        return "- {version}: {modified} ({size:,.0f} bytes)\n  {url}".format(
+            version=self.version,
+            modified=self.last_modified.isoformat(),
+            size=self.size,
+            url=self.module_url,
+        )

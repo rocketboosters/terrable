@@ -16,7 +16,7 @@ def test_publish(lobotomized: lobotomy.Lobotomy, filecmp_cmp: MagicMock):
     """Should execute the publish command successfully."""
     lobotomized.add_call("s3", "upload_file", {})
     filecmp_cmp.return_value = False
-    terrable.main(["publish", str(MODULES_DIRECTORY), "--profile=foo", "--bucket=foo"])
+    terrable.main(["publish", str(MODULES_DIRECTORY), "--profile=me", "--bucket=bar"])
 
 
 @patch("filecmp.cmp")
@@ -28,8 +28,8 @@ def test_publish_dry_run(lobotomized: lobotomy.Lobotomy, filecmp_cmp: MagicMock)
         [
             "publish",
             str(MODULES_DIRECTORY),
-            "--profile=foo",
-            "--bucket=foo",
+            "--profile=me",
+            "--bucket=bar",
             "--dry-run",
         ]
     )

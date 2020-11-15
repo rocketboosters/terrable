@@ -14,7 +14,7 @@ def _parse(arguments: typing.List[str] = None):
     subparsers = parser.add_subparsers(dest="command")
 
     list_parser = subparsers.add_parser("list")
-    list_parser.add_argument("module_target")
+    list_parser.add_argument("module_target", nargs="?")
 
     publish_parser = subparsers.add_parser("publish")
     publish_parser.add_argument("directory", default=".")
@@ -31,7 +31,7 @@ def _parse(arguments: typing.List[str] = None):
     return parser.parse_args(arguments)
 
 
-def main(arguments: typing.List[str] = None) -> "_definitions.CommandResult":
+def run(arguments: typing.List[str] = None) -> "_definitions.CommandResult":
     """Executes the publish action to deploy the resources to S3."""
     args = _parse(arguments)
     session = boto3.Session(profile_name=args.aws_profile)
@@ -44,3 +44,8 @@ def main(arguments: typing.List[str] = None) -> "_definitions.CommandResult":
     result = actions[args.command](context)
     print(f"\n\n{result.message}\n\n")
     return result
+
+
+def main(arguments: typing.List[str] = None) -> None:  # pragma: no-cover
+    """Wrapper for CLI Execution."""
+    run(arguments)

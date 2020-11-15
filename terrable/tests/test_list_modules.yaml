@@ -1,0 +1,6 @@
+clients:
+  s3:
+    list_objects_v2:
+      CommonPrefixes:
+      - Prefix: terrable/foo-module/
+      - Prefix: /terrable/bar-module/

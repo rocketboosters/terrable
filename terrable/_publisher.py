@@ -73,8 +73,12 @@ def run(context: "_definitions.Context") -> "_definitions.CommandResult":
         next_version = 1 if not versions else (1 + versions[-1].version)
         print(f"   + Publishing version {next_version}")
 
-        _s3.put_bundle(context, bundle_path, module_name, next_version)
-        print(f"   + Module {module_name} has been published")
+        result = _s3.put_bundle(context, bundle_path, module_name, next_version)
+        print(f"   + Module {module_name} has been published as {result['key']}")
+
+        if result["published"]:
+            version = _s3.get_version(context, module_name, next_version)
+            print(f"   + Source URL: {version.module_url}")
 
     shutil.rmtree(temp_directory)
 
