@@ -1,5 +1,6 @@
 import argparse
 import typing
+import sys
 
 import boto3
 
@@ -43,7 +44,8 @@ def _parse(arguments: typing.List[str] = None):
         help="Shared S3 key prefix for all modules in the specified bucket.",
     )
 
-    if "list" in (arguments or []):
+    args = sys.argv if arguments is None else arguments
+    if "list" in args:
         parser.add_argument(
             "module_target",
             nargs="?",
@@ -53,7 +55,7 @@ def _parse(arguments: typing.List[str] = None):
                 module.
                 """,
         )
-    elif "publish" in (arguments or []):
+    elif "publish" in args:
         parser.add_argument(
             "directory",
             default=".",
@@ -94,7 +96,7 @@ def _parse(arguments: typing.List[str] = None):
                 """,
         )
 
-    return parser.parse_args(arguments)
+    return parser.parse_args(args=args)
 
 
 def run(arguments: typing.List[str] = None) -> "_definitions.CommandResult":
