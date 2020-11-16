@@ -44,7 +44,7 @@ def _parse(arguments: typing.List[str] = None):
         help="Shared S3 key prefix for all modules in the specified bucket.",
     )
 
-    args = sys.argv if arguments is None else arguments
+    args = sys.argv[1:] if arguments is None else arguments
     if "list" in args:
         parser.add_argument(
             "module_target",
@@ -96,6 +96,7 @@ def _parse(arguments: typing.List[str] = None):
                 """,
         )
 
+    print(args)
     return parser.parse_args(args=args)
 
 
