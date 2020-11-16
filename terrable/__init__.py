@@ -11,11 +11,20 @@ from terrable import _publisher
 
 def _parse(arguments: typing.List[str] = None):
     """Parses command line arguments for the publish invocation."""
-    parser = argparse.ArgumentParser(allow_abbrev=False)
+    args = sys.argv[1:] if arguments is None else arguments
+    command = next((n for n in ["list", "publish"] if n in args), None)
+
+    parser = argparse.ArgumentParser(
+        allow_abbrev=False,
+        # Adjust to match supplied command state to behave like subparsers would.
+        prog=f"terrable {command}" if command else "terrable",
+    )
     parser.add_argument(
         "command",
         choices=["list", "publish"],
-        help="Available command actions to carry out.",
+        # Hide in the help if the command is supplied to behave like a subparser
+        # even though that's not being used here for the sake of intermixed args.
+        help=argparse.SUPPRESS if command else "Command to carry out.",
     )
     parser.add_argument(
         "--aws-directory",
@@ -44,8 +53,7 @@ def _parse(arguments: typing.List[str] = None):
         help="Shared S3 key prefix for all modules in the specified bucket.",
     )
 
-    args = sys.argv[1:] if arguments is None else arguments
-    if "list" in args:
+    if command == "list":
         parser.add_argument(
             "module_target",
             nargs="?",
@@ -55,7 +63,7 @@ def _parse(arguments: typing.List[str] = None):
                 module.
                 """,
         )
-    elif "publish" in args:
+    elif command == "publish":
         parser.add_argument(
             "directory",
             default=".",
@@ -96,8 +104,7 @@ def _parse(arguments: typing.List[str] = None):
                 """,
         )
 
-    print(args)
-    return parser.parse_args(args=args)
+    return parser.parse_intermixed_args(args=args)
 
 
 def run(arguments: typing.List[str] = None) -> "_definitions.CommandResult":
