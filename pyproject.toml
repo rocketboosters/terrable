@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "terrable"
-version = "0.1.6"
+version = "0.2.0"
 description = "Manage private shared terraform modules deployed to S3."
 authors = ["Scott Ernst <swernst@gmail.com>"]
 license = "MIT"
@@ -35,7 +35,11 @@ coverage = "*"
 black = { version = "*", allow-prereleases = true }
 flake8-black = "*"
 taskipy = "*"
-lobotomy = "^0.1.11"
+lobotomy = "^0.3.7"
+aok = "^0.3.0"
+pydocstyle = "^6.1.1"
+radon = "^5.0.1"
+yamllint = "^1.26.1"
 
 [tool.poetry.scripts]
 terrable = 'terrable:main'
@@ -43,11 +47,16 @@ terrable = 'terrable:main'
 [tool.taskipy.tasks]
 # https://github.com/illBeRoy/taskipy
 black = "black ."
-mypy = "poetry run mypy ./terrable/ --ignore-missing-imports"
+black_lint = "black . --check"
+mypy = "mypy . --install-types --non-interactive --ignore-missing-imports"
 flake8 = "flake8 ."
+pydocstyle = "pydocstyle ."
+yamllint = "yamllint ."
+radon = "radon cc . && radon mi ."
 test = "pytest . --cov-report=term-missing --cov=."
-lint = "task black && task flake8 && task mypy"
-check = "task black && task flake8 && task mypy && task test"
+format = "task black"
+lint = "task black_lint && task flake8 && task mypy && task pydocstyle && task radon && task yamllint"
+check = "task format && task lint && task test"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -5,7 +5,7 @@ from terrable import _s3
 
 
 def _list_modules(context: "_definitions.Context") -> "_definitions.CommandResult":
-    """Shows the modules available in the specified bucket prefix."""
+    """Show the modules available in the specified bucket prefix."""
     module_names = _s3.get_modules(context)
 
     print("\n\nAvailable Modules:")
@@ -21,8 +21,9 @@ def _list_modules(context: "_definitions.Context") -> "_definitions.CommandResul
 
 def _list_versions(context: "_definitions.Context") -> "_definitions.CommandResult":
     """
-    Shows the versions for the associated module or modules specified by the
-    command context arguments.
+    Show the versions for the associated module or modules.
+
+    The command line arguments stored in the context are used to determine what to show.
     """
     versions = _s3.get_versions(context, context.args.module_target)
 
@@ -37,7 +38,7 @@ def _list_versions(context: "_definitions.Context") -> "_definitions.CommandResu
 
 
 def run(context: "_definitions.Context") -> "_definitions.CommandResult":
-    """Lists version information for the specified command invocation."""
+    """List version information for the specified command invocation."""
     if not context.args.module_target:
         return _list_modules(context)
 

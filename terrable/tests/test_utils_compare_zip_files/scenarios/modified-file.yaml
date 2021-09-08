@@ -1,0 +1,7 @@
+a: original.zip
+b: modified-file.zip
+
+expected: !aok
+  identical: false
+  code: mismatched_file_diff
+  mismatch: policy_lifecycle_untagged.json

@@ -1,13 +1,15 @@
-import typing
 import pathlib
+import typing
 
 from terrable import _definitions
 
 
 def get_modules(context: "_definitions.Context") -> typing.List[str]:
     """
-    Fetches the modules available in the given bucket and with the given prefix
-    specified in the context object.
+    Fetch the modules available.
+
+    Fetches from the given bucket and with the given prefix specified in the context
+    object.
     """
     client = context.session.client("s3")
     paginator = client.get_paginator("list_objects_v2")
@@ -27,7 +29,8 @@ def get_versions(
     module_name: str,
 ) -> typing.List["_definitions.ModuleVersion"]:
     """
-    Fetches version information for all deployed versions of a given module.
+    Fetch version information for all deployed versions of a given module.
+
     The versions are sorted from oldest to newest.
     """
     client = context.session.client("s3")
@@ -51,7 +54,7 @@ def get_version(
     module_name: str,
     version: int,
 ) -> "_definitions.ModuleVersion":
-    """Fetches version information the specified version of a given module."""
+    """Fetch version information the specified version of a given module."""
     client = context.session.client("s3")
     bucket = context.args.bucket
     region = context.session.region_name or "us-east-1"
@@ -70,7 +73,7 @@ def put_bundle(
     module_name: str,
     version: int,
 ) -> dict:
-    """Publishes the version of the module to S3."""
+    """Publish the version of the module to S3."""
     key = f"{context.args.prefix}/{module_name}/{version}.zip"
     if context.args.dry_run:
         print(f"   ! DRY RUN skipped publishing bundle to {key}")
@@ -96,7 +99,7 @@ def get_bundle(
     key: str,
     download_path: pathlib.Path,
 ):
-    """Downloads the bundle to the specified location."""
+    """Download the bundle to the specified location."""
     context.session.client("s3").download_file(
         Bucket=context.args.bucket,
         Key=key,

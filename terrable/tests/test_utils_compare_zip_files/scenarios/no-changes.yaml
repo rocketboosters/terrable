@@ -1,0 +1,7 @@
+a: original.zip
+b: unchanged.zip
+
+expected: !aok
+  identical: true
+  code: all_comparisons_matched
+  mismatch: null

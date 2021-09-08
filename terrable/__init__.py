@@ -1,3 +1,4 @@
+"""Terrable package for S3 terraform module management."""
 import argparse
 import typing
 import sys
@@ -10,7 +11,7 @@ from terrable import _publisher
 
 
 def _parse(arguments: typing.List[str] = None):
-    """Parses command line arguments for the publish invocation."""
+    """Parse command line arguments for the publish invocation."""
     args = sys.argv[1:] if arguments is None else arguments
     command = next((n for n in ["list", "publish"] if n in args), None)
 
@@ -108,7 +109,7 @@ def _parse(arguments: typing.List[str] = None):
 
 
 def run(arguments: typing.List[str] = None) -> "_definitions.CommandResult":
-    """Executes the publish action to deploy the resources to S3."""
+    """Execute the publish action to deploy the resources to S3."""
     args = _parse(arguments)
     session = boto3.Session(profile_name=args.aws_profile)
     context = _definitions.Context(args, session)
@@ -123,5 +124,5 @@ def run(arguments: typing.List[str] = None) -> "_definitions.CommandResult":
 
 
 def main(arguments: typing.List[str] = None) -> None:  # pragma: no-cover
-    """Wrapper for CLI Execution."""
+    """Execute wrapper for CLI Execution."""
     run(arguments)

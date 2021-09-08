@@ -1,0 +1,7 @@
+a: original.zip
+b: different-files.zip
+
+expected: !aok
+  identical: false
+  code: mismatched_missing_file
+  mismatch: data.tf
