@@ -114,6 +114,6 @@ publish-library:
   stage: release
   script:
   - pip install poetry
-  - poetry publish -u "$PYPI_USER" -p "$PYPI_TERRABLE_PAT"
+  - poetry publish -u "${PYPI_USER}" -p "${PYPI_TERRABLE_PAT}"
   rules:
   - if: $CI_PROJECT_NAMESPACE == "rocket-boosters" && $CI_COMMIT_TAG
