@@ -1,5 +1,7 @@
 stages:
 - check
+- build
+- release
 
 black-lint:
   image: python:3.9
@@ -93,3 +95,25 @@ pytest-py39:
     - .coverage
     - coverage.xml
     expire_in: 1 day
+
+build-library:
+  image: python:3.9
+  stage: build
+  script:
+  - pip install poetry
+  - poetry build
+  artifacts:
+    paths:
+    - dist/
+    expire_in: 90 days
+  rules:
+  - if: $CI_PROJECT_NAMESPACE == "rocket-boosters" && $CI_COMMIT_TAG
+
+publish-library:
+  image: python:3.9
+  stage: release
+  script:
+  - pip install poetry
+  - poetry publish -u "$PYPI_USER" -p "$PYPI_TERRABLE_PAT"
+  rules:
+  - if: $CI_PROJECT_NAMESPACE == "rocket-boosters" && $CI_COMMIT_TAG
