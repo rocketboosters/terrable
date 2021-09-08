@@ -15,6 +15,20 @@ def test_list(lobotomized: lobotomy.Lobotomy):
     assert result.code == "LISTED_VERSIONS"
 
 
+@lobotomy.Patch(path=MY_DIRECTORY.joinpath("test_list_verbose.yaml"))
+def test_list_verbose(lobotomized: lobotomy.Lobotomy):
+    """Should execute the list command successfully."""
+    result = terrable.run(["list", "--profile=foo", "--bucket=foo", "--verbose"])
+    assert result.code == "LISTED_MODULES"
+
+
+@lobotomy.Patch(path=MY_DIRECTORY.joinpath("test_list_verbose.yaml"))
+def test_list_latest(lobotomized: lobotomy.Lobotomy):
+    """Should execute the list command successfully."""
+    result = terrable.run(["list", "--profile=foo", "--bucket=foo", "--latest"])
+    assert result.code == "LISTED_MODULES"
+
+
 @lobotomy.Patch(path=MY_DIRECTORY.joinpath("test_list.yaml"))
 def test_list_prefixed(lobotomized: lobotomy.Lobotomy):
     """Should execute the list command successfully."""

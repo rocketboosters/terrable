@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "terrable"
-version = "0.2.0"
+version = "0.2.1"
 description = "Manage private shared terraform modules deployed to S3."
 authors = ["Scott Ernst <swernst@gmail.com>"]
 license = "MIT"

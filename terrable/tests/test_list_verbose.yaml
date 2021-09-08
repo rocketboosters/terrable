@@ -1,0 +1,24 @@
+clients:
+  s3:
+    list_objects_v2:
+    - CommonPrefixes:
+      - Prefix: terrable/foo-module/
+      - Prefix: /terrable/bar-module/
+    - Contents:
+      - ETag: '123123123'
+        Key: terrable/foo-module/2.zip
+        LastModified: '2020-11-11T23:59:06.794955Z'
+        Size: 123
+      - ETag: '123123123'
+        Key: terrable/foo-module/1.zip
+        LastModified: '2020-11-12T23:59:06.794955Z'
+        Size: 123
+    - Contents:
+      - ETag: '123123123'
+        Key: terrable/bar-module/2.zip
+        LastModified: '2020-11-11T23:59:06.794955Z'
+        Size: 123
+      - ETag: '123123123'
+        Key: terrable/bar-module/1.zip
+        LastModified: '2020-11-12T23:59:06.794955Z'
+        Size: 123

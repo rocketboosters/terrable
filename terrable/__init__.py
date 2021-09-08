@@ -64,6 +64,22 @@ def _parse(arguments: typing.List[str] = None):
                 module.
                 """,
         )
+        parser.add_argument(
+            "--verbose",
+            action="store_true",
+            help="""
+                When specified, verbose version data will be echoed instead of just
+                the compact listing outputs.
+                """,
+        )
+        parser.add_argument(
+            "--latest",
+            action="store_true",
+            help="""
+                When specified, the latest version info for the module or modules
+                will be specified instead of all of listing all available versions.
+                """,
+        )
     elif command == "publish":
         parser.add_argument(
             "directory",
